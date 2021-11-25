@@ -12,7 +12,7 @@ include 'connection.php';
 <body> 
     <?php 
     
-    $sql = "SELECT * FROM fpdf";
+    $sql = "SELECT * FROM credenciamento_feirantes";
     $result = $conn->query($sql);
     while($row = $result->fetch_assoc()){
     ?>

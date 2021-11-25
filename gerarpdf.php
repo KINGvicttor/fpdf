@@ -24,9 +24,13 @@ function Footer(){
 //select no banco
 $id = $_GET['id'];
 
-$sql = "SELECT * FROM fpdf WHERE id = $id";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
+$sqlFeirante = "SELECT * FROM credenciamento_feirantes WHERE id = $id";
+$resultFeirante = $conn->query($sqlFeirante);
+$rowFeirante = $resultFeirante->fetch_assoc();
+
+$sqlAtividade = "SELECT * FROM cadastro_atividades WHERE id = " . $rowFeirante['cadastro_atividade_id'];
+$resultAtividade = $conn->query($sqlAtividade);
+$rowAtividade = $resultAtividade->fetch_assoc();
 
 //inicio pdf
 $pdf = new PDF();
@@ -39,34 +43,34 @@ $pdf->Ln(15);
 $pdf->SetFont("Arial", "B", 12);
 $pdf->Cell(190, 10, "DADOS PESSOAIS", 1 , 1, "C");
 $pdf->SetFont("Arial", "", 12);
-$pdf->Cell(190, 10, "Nome: ".utf8_decode($row['nome'])."", 1);
+$pdf->Cell(190, 10, "Nome: ".utf8_decode($rowFeirante['nome'])."", 1);
 $pdf->Ln();
 
-$pdf->Cell(95, 10, "CPF: " .$row['cpf']. "", 1, 0);
-$pdf->Cell(95, 10, "RG: " .$row['rg']. "", 1, 0);
+$pdf->Cell(95, 10, "CPF: " .$rowFeirante['cpf']. "", 1, 0);
+$pdf->Cell(95, 10, "RG: " .$rowFeirante['rg']. "", 1, 0);
 $pdf->Ln();
-$pdf->Cell(95, 10, "Email: " .$row['email']. "", 1, 0);
-$pdf->Cell(95, 10, "Telefone: " .$row['telefone']. "", 1, 0);
+$pdf->Cell(95, 10, "Email: " .$rowFeirante['email']. "", 1, 0);
+$pdf->Cell(95, 10, "Telefone: " .$rowFeirante['telefone']. "", 1, 0);
 $pdf->Ln();
 $pdf->Ln();
 
 $pdf->SetFont("Arial", "B", 12);
 $pdf->Cell(190, 10, utf8_decode("ENDEREÇO"), 1 , 1, "C");
 $pdf->SetFont("Arial", "", 12);
-$pdf->Cell(63.3, 10, "CEP: ". $row['cep'], 1, 0);
-$pdf->Cell(63.3, 10, "Cidade: ". $row['cidade'], 1, 0);
-$pdf->Cell(63.4, 10, "Bairro: ". $row['bairro'], 1, 0);
+$pdf->Cell(63.3, 10, "CEP: ". $rowFeirante['cep'], 1, 0);
+$pdf->Cell(63.3, 10, "Cidade: ". $rowFeirante['cidade'], 1, 0);
+$pdf->Cell(63.4, 10, "Bairro: ". $rowFeirante['bairro'], 1, 0);
 $pdf->Ln();
-$pdf->Cell(150, 10, "Rua: ". $row['rua'], 1, 0);
-$pdf->Cell(40, 10, "UF: ". $row['uf'], 1, 0);
+$pdf->Cell(150, 10, "Rua: ". $rowFeirante['rua'], 1, 0);
+$pdf->Cell(40, 10, "UF: ". $rowFeirante['uf'], 1, 0);
 $pdf->Ln();
 $pdf->Ln();
 
 $pdf->SetFont("Arial", "B", 12);
 $pdf->Cell(190, 10, utf8_decode("ATIVIDADE"), 1 , 1, "C");
 $pdf->SetFont("Arial", "", 12);
-$pdf->Cell(95, 10, "Atividade: ". $row['atividade'], 1, 0);
-$pdf->Cell(95, 10, "Valor: R$" .$row['valor']. "", 1, 0);
+$pdf->Cell(95, 10, "Atividade: ". $rowAtividade['nome'], 1, 0);
+$pdf->Cell(95, 10, "Valor: R$" .$rowAtividade['valor']. "", 1, 0);
 $pdf->Ln();
 $pdf->Ln();
 
@@ -79,8 +83,8 @@ $pdf->Cell(63.4, 10, utf8_decode("SITUAÇÃO"), 1, 0);
 $pdf->Ln();
 $pdf->SetFont("Arial", "", 12);
 $pdf->Cell(63.3, 10, "", 1, 0);
-$pdf->Cell(63.3, 10, $row['planoPag'], 1, 0);
-$pdf->Cell(63.4, 10, "", 1, 0);
+$pdf->Cell(63.3, 10, $rowFeirante['pagamento'], 1, 0);
+$pdf->Cell(63.4, 10, $rowFeirante['status'], 1, 0);
 $pdf->Ln();
 $pdf->Cell(63.3, 10, "", 1, 0);
 $pdf->Cell(63.3, 10, "", 1, 0);
